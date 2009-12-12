@@ -7,4 +7,4 @@ Steps for using:
 1. Rename settings-sample.rb to settings.rb
 2. Fill in your Amazon API credentials, git repositories, and directories you want to backup
 3. something 
-3. something
+4. something
