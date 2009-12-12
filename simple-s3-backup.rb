@@ -18,7 +18,7 @@ else
   begin
     bucket = Bucket.create(S3_BUCKET)
   rescue Exception => e
-    puts "There was a problem creating the bucket you specified: #{e.message}"
+    puts "There was a problem creating the bucket: #{e.message}"
     exit
   end
 end
@@ -29,14 +29,23 @@ FileUtils.mkdir_p full_tmp_path
 # Perform MySQL backups
 if MYSQL_DBS && MYSQL_DBS.length > 0
   MYSQL_DBS.each do |db|
-    db_filename = "#{db}-#{timestamp}.gz"
+    db_filename = "db-#{db}-#{timestamp}.gz"
     system("#{MYSQLDUMP_CMD} -u #{MYSQL_USER} -p#{MYSQL_PASS} --single-transaction --add-drop-table --add-locks --create-options --disable-keys --extended-insert --quick #{db} | #{GZIP_CMD} -c > #{full_tmp_path}/#{db_filename}")
     S3Object.store(db_filename, open("#{full_tmp_path}/#{db_filename}"), S3_BUCKET)
   end
 end
 
+# Perform directory backups
+if DIRECTORIES && DIRECTORIES.length > 0
+  DIRECTORIES.each do |k,v|
+    dir_filename = "dir-#{v}-#{timestamp}.tgz"
+    system("cd #{k} && #{TAR_CMD} -czf #{full_tmp_path}/#{dir_filename} .")
+    S3Object.store(dir_filename, open("#{full_tmp_path}/#{dir_filename}"), S3_BUCKET)
+  end
+end
+
 # Perform git backups
-# coming
+# coming (or could directory backup work just as well?)
 
 # Finally, remove tmp directory
 FileUtils.remove_dir full_tmp_path

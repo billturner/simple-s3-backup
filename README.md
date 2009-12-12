@@ -1,4 +1,5 @@
-=== Simple S3 Backup
+Simple S3 Backup
+----------------
 
 A simple Ruby script to back up databases, directories, and git repositories to Amazon S3 (Simple Storage Service).
 
