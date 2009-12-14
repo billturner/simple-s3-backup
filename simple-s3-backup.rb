@@ -8,7 +8,7 @@ include AWS::S3
 require 'settings'
 
 # Initial setup
-timestamp = Time.now.strftime("%Y%m%d%H%M")
+timestamp = Time.now.strftime("%Y%m%d-%H%M")
 full_tmp_path = [USER_PATH, TMP_BACKUP_PATH].join('/')
 
 # Find/create the backup bucket
@@ -43,9 +43,6 @@ if DIRECTORIES && DIRECTORIES.length > 0
     S3Object.store(dir_filename, open("#{full_tmp_path}/#{dir_filename}"), S3_BUCKET)
   end
 end
-
-# Perform git backups
-# coming (or could directory backup work just as well?)
 
 # Finally, remove tmp directory
 FileUtils.remove_dir full_tmp_path
