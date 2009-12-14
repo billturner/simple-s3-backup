@@ -37,8 +37,8 @@ end
 
 # Perform directory backups
 if DIRECTORIES && DIRECTORIES.length > 0
-  DIRECTORIES.each do |name,dir|
-    dir_filename = "dir-#{dir}-#{timestamp}.tgz"
+  DIRECTORIES.each do |name, dir|
+    dir_filename = "dir-#{name}-#{timestamp}.tgz"
     system("cd #{dir} && #{TAR_CMD} -czf #{full_tmp_path}/#{dir_filename} .")
     S3Object.store(dir_filename, open("#{full_tmp_path}/#{dir_filename}"), S3_BUCKET)
   end
@@ -46,7 +46,7 @@ end
 
 # Perform single files backups
 if SINGLE_FILES && SINGLE_FILES.length > 0
-  SINGLE_FILES.each do |name,files|
+  SINGLE_FILES.each do |name, files|
 
     # Create a directory to collect the files
     files_tmp_path = File.join(full_tmp_path, "#{name}-tmp")
