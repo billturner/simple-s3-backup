@@ -4,8 +4,7 @@ GZIP_CMD = '/usr/bin/gzip'
 TAR_CMD = '/usr/bin/tar'
 
 # PATHS
-SCRIPT_PATH = '/home/username/simple-s3-backup' # Directory where the script was installed
-TMP_BACKUP_PATH = 'temp'                        # Will be created inside the above directory
+TMP_BACKUP_PATH = 'temp' # Will be created (and removed) inside the directory where the script is installed
 
 # CREATE AWS/S3 CONNECTION
 AWS::S3::Base.establish_connection!(
