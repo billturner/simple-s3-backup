@@ -37,10 +37,35 @@ end
 
 # Perform directory backups
 if DIRECTORIES && DIRECTORIES.length > 0
-  DIRECTORIES.each do |k,v|
-    dir_filename = "dir-#{v}-#{timestamp}.tgz"
-    system("cd #{k} && #{TAR_CMD} -czf #{full_tmp_path}/#{dir_filename} .")
+  DIRECTORIES.each do |name,dir|
+    dir_filename = "dir-#{dir}-#{timestamp}.tgz"
+    system("cd #{dir} && #{TAR_CMD} -czf #{full_tmp_path}/#{dir_filename} .")
     S3Object.store(dir_filename, open("#{full_tmp_path}/#{dir_filename}"), S3_BUCKET)
+  end
+end
+
+# Perform single files backups
+if SINGLE_FILES && SINGLE_FILES.length > 0
+  SINGLE_FILES.each do |name,files|
+
+    # Create a directory to collect the files
+    files_tmp_path = File.join(full_tmp_path, "#{name}-tmp")
+    FileUtils.mkdir_p files_tmp_path
+
+    # Filename for files
+    files_filename = "files-#{name}-#{timestamp}.tgz"
+
+    # Copy files to temp directory
+    files.each do |file|
+      system("#{CP_CMD} #{file} #{files_tmp_path}")
+    end
+
+    # Create archive & copy to S3
+    system("cd #{files_tmp_path} && #{TAR_CMD} -czf #{full_tmp_path}/#{files_filename} .")
+    S3Object.store(files_filename, open("#{full_tmp_path}/#{files_filename}"), S3_BUCKET)
+
+    # Remove the temporary directory for the files
+    FileUtils.remove_dir files_tmp_path
   end
 end
 
