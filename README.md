@@ -14,4 +14,5 @@ Steps for using:
 
 To do:
 
+1. Use fileutils for copying files
 1. Set a time limit for expiring previous backups

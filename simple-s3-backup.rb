@@ -1,4 +1,4 @@
-#/usr/bin/env ruby
+#!/usr/bin/env ruby
 
 %w(rubygems aws/s3 fileutils).each do |lib|
   require lib
@@ -56,9 +56,7 @@ if SINGLE_FILES && SINGLE_FILES.length > 0
     files_filename = "files-#{name}-#{timestamp}.tgz"
 
     # Copy files to temp directory
-    files.each do |file|
-      system("#{CP_CMD} #{file} #{files_tmp_path}")
-    end
+    FileUtils.cp files, files_tmp_path
 
     # Create archive & copy to S3
     system("cd #{files_tmp_path} && #{TAR_CMD} -czf #{full_tmp_path}/#{files_filename} .")
