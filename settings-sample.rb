@@ -17,7 +17,7 @@ AWS::S3::Base.establish_connection!(
 S3_BUCKET = 'my.unique.name'
 
 # SPECIFY HOW MANY DAYS OF ARCHIVES YOU WANT TO KEEP
-DAYS_TO_KEEP = 7
+DAYS_OF_ARCHIVES = 7
 
 # MYSQL CONFIG
 #  * Put the MySQL table names that you want to back up in the MYSQL_DBS array below
