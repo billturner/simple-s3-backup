@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+# Add local directory to LOAD_PATH
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
+
 %w(rubygems aws/s3 fileutils).each do |lib|
   require lib
 end

@@ -3,7 +3,7 @@ Simple S3 Backup
 
 A simple Ruby script to back up MySQL database tables, full directories, and groups of single files to Amazon S3 (Simple Storage Service).
 
-Steps for using:
+**Steps for using:**
 
 1. Set up an Amazon S3 account: <http://aws.amazon.com/s3/>
 2. Install the aws/s3 Ruby gem: <http://amazon.rubyforge.org/>
@@ -13,7 +13,6 @@ Steps for using:
 
 `15 3 * * * /usr/bin/ruby /home/username/backups/simple-s3-backup.rb`
 
-
-To do:
+**To do:**
 
 1. Set a time limit for expiring previous backups
