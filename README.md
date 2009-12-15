@@ -15,4 +15,4 @@ A simple Ruby script to back up MySQL database tables, full directories, and gro
 
 **To do:**
 
-1. Set a time limit for expiring previous backups
+1. Split daily archives into separate directories in the bucket? Would be helpful for those with lots of files, and lots of days

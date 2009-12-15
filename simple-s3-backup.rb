@@ -70,5 +70,11 @@ if SINGLE_FILES && SINGLE_FILES.length > 0
   end
 end
 
-# Finally, remove tmp directory
+# Remove tmp directory
 FileUtils.remove_dir full_tmp_path
+
+# Now, clean up unwanted archives
+cutoff_date = Time.now.utc.to_i - (DAYS_OF_ARCHIVES * 86400)
+bucket.objects.select{ |o| o.last_modified.to_i < cutoff_date }.each do |f|
+  S3Object.delete(f.key, S3_BUCKET)
+end
