@@ -38,6 +38,18 @@ if MYSQL_DBS && MYSQL_DBS.length > 0
   end
 end
 
+# Perform MongoDB backups
+if MONGO_DBS && MONGO_DBS.length > 0
+  mdb_dump_dir = File.join(full_tmp_path, "mdbs")
+  FileUtils.mkdir_p mdb_dump_dir
+  MONGO_DBS.each do |mdb|
+    mdb_filename = "mdb-#{mdb}-#{timestamp}.tgz"
+    system("#{MONGODUMP_CMD} -h #{MONGO_HOST} -d #{mdb} -o #{mdb_dump_dir} && cd #{mdb_dump_dir}/#{mdb} && #{TAR_CMD} -czf #{full_tmp_path}/#{mdb_filename} .")
+    S3Object.store(mdb_filename, open("#{full_tmp_path}/#{mdb_filename}"), S3_BUCKET)
+  end
+  FileUtils.remove_dir mdb_dump_dir
+end
+
 # Perform directory backups
 if DIRECTORIES && DIRECTORIES.length > 0
   DIRECTORIES.each do |name, dir|

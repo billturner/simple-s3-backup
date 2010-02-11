@@ -1,7 +1,7 @@
 Simple S3 Backup
 ----------------
 
-A simple Ruby script to back up MySQL database tables, full directories, and groups of single files to Amazon S3 (Simple Storage Service).
+A simple Ruby script to back up MySQL database tables, MongoDB databases, full directories, and groups of single files to Amazon S3 (Simple Storage Service).
 
 **Steps for using:**
 
