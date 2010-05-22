@@ -30,16 +30,22 @@ end
 FileUtils.mkdir_p full_tmp_path
 
 # Perform MySQL backups
-if MYSQL_DBS && MYSQL_DBS.length > 0
+if defined?(MYSQL_DBS)
   MYSQL_DBS.each do |db|
     db_filename = "db-#{db}-#{timestamp}.gz"
-    system("#{MYSQLDUMP_CMD} -u #{MYSQL_USER} -p#{MYSQL_PASS} --single-transaction --add-drop-table --add-locks --create-options --disable-keys --extended-insert --quick #{db} | #{GZIP_CMD} -c > #{full_tmp_path}/#{db_filename}")
+    # allow check for a blank or non existent password
+    if defined?(MYSQL_PASS) and MYSQL_PASS!=nil and MYSQL_PASS!=""
+      password_param = "-p#{MYSQL_PASS}" 
+    else
+      password_param = ""
+    end
+    system("#{MYSQLDUMP_CMD} -u #{MYSQL_USER} #{password_param} --single-transaction --add-drop-table --add-locks --create-options --disable-keys --extended-insert --quick #{db} | #{GZIP_CMD} -c > #{full_tmp_path}/#{db_filename}")
     S3Object.store(db_filename, open("#{full_tmp_path}/#{db_filename}"), S3_BUCKET)
   end
 end
 
 # Perform MongoDB backups
-if MONGO_DBS && MONGO_DBS.length > 0
+if defined?(MONGO_DBS)
   mdb_dump_dir = File.join(full_tmp_path, "mdbs")
   FileUtils.mkdir_p mdb_dump_dir
   MONGO_DBS.each do |mdb|
@@ -51,7 +57,7 @@ if MONGO_DBS && MONGO_DBS.length > 0
 end
 
 # Perform directory backups
-if DIRECTORIES && DIRECTORIES.length > 0
+if defined?(DIRECTORIES)
   DIRECTORIES.each do |name, dir|
     dir_filename = "dir-#{name}-#{timestamp}.tgz"
     system("cd #{dir} && #{TAR_CMD} -czf #{full_tmp_path}/#{dir_filename} .")
@@ -60,7 +66,7 @@ if DIRECTORIES && DIRECTORIES.length > 0
 end
 
 # Perform single files backups
-if SINGLE_FILES && SINGLE_FILES.length > 0
+if defined?(SINGLE_FILES)
   SINGLE_FILES.each do |name, files|
 
     # Create a directory to collect the files

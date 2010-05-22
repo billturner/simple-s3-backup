@@ -8,7 +8,7 @@ A simple Ruby script to back up MySQL database tables, MongoDB databases, full d
 1. Set up an Amazon S3 account: <http://aws.amazon.com/s3/>
 2. Install the aws/s3 Ruby gem: <http://amazon.rubyforge.org/>
 3. Rename settings-sample.rb to settings.rb
-4. In settings.rb, fill in specific command paths, your Amazon API credentials, MySQL login info & databases, and any directories you want backed up
+4. In settings.rb, fill in specific command paths, your Amazon API credentials, MySQL login info & databases, and any directories you want backed up.  Just comment out the constants for backups you don't want to run.
 5. Set the script to run with cron - I have mine run every night, like so:
 
 `15 3 * * * /usr/bin/ruby /home/username/backups/simple-s3-backup.rb`
