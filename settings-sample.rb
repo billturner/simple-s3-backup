@@ -8,10 +8,14 @@ CP_CMD = '/bin/cp'
 # PATHS
 TMP_BACKUP_PATH = 'temp' # Will be created (and removed) inside the directory where the script is installed
 
+# use SSL to transmit backups to S3 (a good idea)
+USE_SSL = true
+
 # CREATE AWS/S3 CONNECTION
 AWS::S3::Base.establish_connection!(
-  :access_key_id  => 'XXXXX',
-  :secret_access_key => 'XXXXX'
+  :access_key_id  => '*** YOUR CREDENTIALS HERE ***',
+  :secret_access_key => '*** YOUR CREDENTIALS HERE ***',
+  :use_ssl => USE_SSL
 )
 
 # SPECIFY S3 BUCKET
