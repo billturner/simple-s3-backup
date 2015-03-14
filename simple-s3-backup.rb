@@ -39,7 +39,7 @@ if defined?(MYSQL_DBS)
     else
       password_param = ""
     end
-    system("#{MYSQLDUMP_CMD} -u #{MYSQL_USER} #{password_param} --single-transaction --add-drop-table --add-locks --create-options --disable-keys --extended-insert --quick #{db} | #{GZIP_CMD} -c > #{full_tmp_path}/#{db_filename}")
+    system("#{MYSQLDUMP_CMD} -u #{MYSQL_USER} -h #{MYSQL_DB} #{password_param} --single-transaction --add-drop-table --add-locks --create-options --disable-keys --extended-insert --quick #{db} | #{GZIP_CMD} -c > #{full_tmp_path}/#{db_filename}")
     S3Object.store(db_filename, open("#{full_tmp_path}/#{db_filename}"), S3_BUCKET)
   end
 end
